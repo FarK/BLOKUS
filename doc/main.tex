@@ -1,0 +1,63 @@
+\documentclass[pdftex,a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-noquoting]{babel}
+\usepackage{graphicx}		% Inclusión de imágenes
+\usepackage{import}		% Inclusión con rutas relativas
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}	% Pseudocódigo
+\usepackage{fancyhdr}           % Cabecera y pie de página
+
+% Enlaces y atributos PDF
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{color}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	filecolor=blue,
+	urlcolor=blue,
+	pdftitle=CyclePOV,
+	pdfauthor=Carlos Falgueras García,
+	pdfsubject=Proyecto de fin de carrera,
+	pdfkeywords=POV bicycle led
+}
+
+\setlength{\headheight}{16pt} % Para callar un warning
+\pagestyle{fancy} % Cabecera y pie de página por defecto
+
+\title{{\Huge Minimax para Blokus} \\ {\large\slshape Trabajo IA2}}
+\author{Carlos Falgueras García}
+
+\setlist[itemize]{noitemsep, topsep=0em}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\setlength{\parskip}{1em}
+\addcontentsline{toc}{part}{Índice}
+\thispagestyle{empty} %Eliminamos la cabecera y la enumeración del índice
+\clearpage
+
+\section{Introducción}
+\import{./}{introduccion}
+\clearpage
+
+\section{Representación}
+\import{./}{representacion}
+\clearpage
+
+\section{Algoritmos}
+\import{./}{alg_minimax}
+\clearpage
+\import{./}{alg_movimientos}
+\clearpage
+
+\section{Manual de usuario}
+\import{./}{manual}
+\clearpage
+
+\section{Trabajo futuro}
+
+\end{document}

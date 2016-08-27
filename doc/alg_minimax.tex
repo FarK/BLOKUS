@@ -1,0 +1,59 @@
+\subsection{Minimax}
+
+Se ha optado por una versión de minimax en la que \textbf{el estado se comparte}
+entre todo los nodos. Esto permite un gran ahorro en memoria y tiempo al
+librarnos de copiar el estado. Para conseguirlo se requiere la implementación de
+dos funciones:
+
+\begin{itemize}
+	\item \texttt{do-movement}: Aplica un movimiento dado al estado,
+		modificando el mismo.
+	\item \texttt{undo-movement}: Desace un movimiento dado. Dejando el
+		estado exactamente igual que antes de aplicarlo.
+\end{itemize}
+
+El pseudocódigo de las dos principales funciones de minimax se muestra a
+continuación. En ellos podemos encontrar las funciones ``end-condition$(node)$''
+y ``choose-values$(values, best\ values, node)$''. La primera comprueba las
+condiciones que determinan el fin de la búsqueda (profundidad máxima, límite de
+tiempo, etc). La segunda devuelve cierto si el primer vector de valores es
+elegido sobre el segundo, es en esta función donde se implementan las distintas
+estrategias: \textsl{paranóica}, \textsl{egoista} y \textsl{aleatoria}.
+
+\clearpage
+\begin{algorithm}
+\caption{minimax}\label{minimax}
+\begin{algorithmic}
+	\Function{minimax}{$state, node\ options$} \Comment{Node options like max-depth}
+	\State $node \gets\ $make-node$(state, node\ options)$
+	\For{$move\ in\ $get-movements$(node)\ and\ not\ $end-condition$(node)$}
+		\State $node \gets\ $next-node$(node, move)$ \Comment{Apply movement}
+		\State $values \gets\ $eval-node$(node)$
+		\State $node \gets\ $prev-node$(node, move)$ \Comment{Undo movement}
+	\EndFor
+
+	\If{choose-values$(values, best\ values, node)$}
+		\State $best\ values \gets values$
+		\State $best\ move \gets move$
+	\EndIf
+	\State \Return $best\ move$
+	\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{eval-node}\label{eval-node}
+\begin{algorithmic}
+	\Function{eval-node}{$node$}
+	\For{$move\ in\ $get-movements$(node)\ and\ not\ $end-condition$(node)$}
+		\State $node \gets\ $next-node$(node, move)$  \Comment{Apply movement}
+		\State $new\ values \gets\ $eval-node$(node)$
+		\State $node \gets\ $prev-node$(node, move)$  \Comment{Undo movement}
+	\EndFor
+	\If{choose-values$(values, best\ values, node)$}
+		\State $values \gets new\ values$
+	\EndIf
+	\State \Return utility$(node)$
+	\EndFunction
+\end{algorithmic}
+\end{algorithm}

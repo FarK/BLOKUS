@@ -1,0 +1,46 @@
+En este trabajo se ha realizado una implementación en LISP del juego de mesa
+\textbf{Blokus} con el fin de probar y experimentar con el algoritmo
+\textbf{minimax} para juegos de múltiples jugadores.
+
+\subsection{El juego}
+\textsl{Blokus} es un juego de mesa para 4 jugadores (aunque hay versiones con
+más y mejos contrincantes) en el que cada jugador coloca por turnos en un
+tablero de $20\times20$, una de las 21 piezas con las que inicia la partida.
+Cada pieza puntúa según el número de casillas que ocupe y su colocación se rige
+por las siguientes normas:
+
+\begin{itemize}
+	\item No pueden solaparse
+	\item Sus ejes no pueden estar adyacentes a los de una pieza del mismo
+		color
+	\item Al menos un vértice debe ser adyacente a una pieza del mismo color
+	\begin{itemize}
+		\item En el primer turno, la pieza colocada deberá ocupar la
+			esquina del tablero que le corresponda al jugador
+	\end{itemize}
+\end{itemize}
+
+El juego se termina cuando:
+\begin{itemize}
+	\item Un jugador coloca todas sus piezas
+	\item Ningún jugador puede colocar ninguna pieza
+\end{itemize}
+
+\subsection{El programa}
+El programa nos permite seleccionar el tipo de cada uno de los 4 jugadores:
+\begin{itemize}
+	\item \textbf{Ninguno}: Para indicar la ausencia del jugador
+	\item \textbf{Humano}: Jugará el usuario mediante el teclado
+	\item \textbf{Egoísta}: Jugará la máquina con una estrategia
+		\textsl{egoísta}, ie: predecirá los movimientos suponiendo que
+		tanto él como el resto de jugadores eligen la mejor jugada para
+		sí mismos.
+	\item \textbf{Paranoico}: Jugará la máquina con una estrategia
+		\textsl{paranoica}, ie: predecirá los movimientos suponiendo que
+		los demás jugadores eligen la peor jugada para él y él la mejor
+		para sí mismo.
+	\item \textbf{Aleatorio}: Elige una jugada aleatoria cada vez.
+\end{itemize}
+
+Además nos permitirá seleccionar el tiempo máximo que podrá ``\textsl{pensar}''
+la máquina y/o la profundidad máxima del algoritmo minimax.

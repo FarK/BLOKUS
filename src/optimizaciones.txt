@@ -1,0 +1,31 @@
+== En la representación ==
+* Para todas las piezas con todas sus rotaciones no simétricas se autogeneran
+  tablas estáticas con:
+	- Su puntuación
+	- Sus coordenadas
+	- Sus esquinas exteriores (dónde puede ir otra pieza del mismo jugador)
+	- Sus esquinas interiores (las esquinas de la pieza)
+
+* Los movimientos se pueden *hacer* y *deshacer*, lo que permite tener una sola
+  representación del estado del juego en memoria.
+
+* Se mantiene una doble estructura para representar el estado del juego:
+	1. Dos listas de fichas, jugadas y sin jugar, por cada jugador, con su
+	   posición y rotación.
+	2. Una matriz de 20x20 cuyas casillas toman los valores de 'id del
+	   jugador' o 'nil', según haya una ficha de un jugador con esa id o no
+	   haya ninguna.
+  El acceso constante de la matriz mejora la eficiencia al comprobar si una
+  pieza se puede o no poner en el tablero. Las lista de fichas es necesaria para
+  saber qué piezas tienen los jugadores y dónde.
+
+== En el algoritmo minimax ==
+* A la hora de generar los movimientos posibles utilizamos las tablas de
+  esquinas interiores y exteriores para reducir el número de posiciones a probar
+	- Para eliminar las posiciones duplicadas se ha implementado una función
+	  de O(n log n) en lugar de usar 'remove-duplicates' de O(n^2). Esto es
+	  posible porque no importa el orden en el que se comprueben las
+	  posiciones.
+
+* El poder hacer y deshacer los movimientos reduce notablemente el uso de
+  memoria del algoritmo.

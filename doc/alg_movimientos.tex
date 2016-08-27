@@ -1,0 +1,39 @@
+\subsection{Movimientos}
+
+Para generar la lista de los movimientos que puede realizar un jugador en un
+estado dado del juego se han de recorrer todas las fichas que posee, probar
+todas las rotaciones posibles en las posiciones válidas y quedarse con las que
+cumplen las reglas de pisar niguna pieza ya puesta y no tocar ninguna arista del
+mismo color.
+
+Esta tarea se siplifica enormemente con las tablas de esquinas [ver
+\ref{subsec:piezas}]. Para obtener una lista de las posiciones candidatas dónde
+situar una nueva pieza simplemente hay que recolectar la lista de esquinas
+exteriores de cada pieza colocada en el tablero y eliminar las duplicadas. Una
+vez se tenga esta lista, se recorren las piezas no jugadas y, por cada rotación
+posible, se intentan colocar en colocar en todas las esquinas exteriores, el
+conjuto de las que puedan ser colocadas representa los movimientos posibles del
+jugador.
+
+A continuación se muestra el pseudocódigo de este algoritmo:
+
+\begin{algorithm}
+\caption{get-movements}\label{get-movements}
+\begin{algorithmic}
+	\Function{get-movements}{$node, player$}
+	\For{$pos\ in\ $valid-external-corners$(node)$}
+		\For{$tile\ in\ $held-tiles$(player)$}
+			\For{$rot\ in\ $possible-rotations$(tile)$}
+				\For{$icorner\ in\ $internal-corners$(tile)$}
+					\State $movement \gets\ $gen-movement$(tile, rot, icorner, pos)$
+					\If{valid-movement$(movement)$}
+						\State $movements \gets [movements, movement]$
+					\EndIf
+				\EndFor
+			\EndFor
+		\EndFor
+	\EndFor
+	\State \Return $[movements, pass]$ \Comment{Last movement always is pass}
+	\EndFunction
+\end{algorithmic}
+\end{algorithm}

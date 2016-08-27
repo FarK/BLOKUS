@@ -1,0 +1,147 @@
+%----------%
+% PAQUETES %
+%----------%
+% Codificación e idioma
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-noquoting]{babel}
+
+\usepackage{import}		% Inclusión con rutas relativas
+\usepackage{amsmath}		% Símbolos matemáticos
+\usepackage{listings}		% Formateo de código
+\usepackage{appendix}		% Modificación de los anexos
+\usepackage{lastpage}		% Última página
+\usepackage[disable]{todonotes}	%TODOs
+\usepackage{datetime}		% Modificación de formatos de fechas
+\usepackage{graphicx}		% Inclusión de imágenes
+\usepackage{xparse}		% Para comandos con argumentos opcionales
+
+\usepackage{float}
+\usepackage{natbib}
+\usepackage{subcaption}		% Subfigure
+\usepackage[spanish]{varioref}
+
+% Estilo de la página
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% Enlaces y atributos PDF
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{color}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	filecolor=blue,
+	urlcolor=blue,
+	pdftitle=CyclePOV,
+	pdfauthor=Carlos Falgueras García,
+	pdfsubject=Proyecto de fin de carrera,
+	pdfkeywords=POV bicycle led
+}
+
+%------------------------------------%
+% DISEÑO DE CABECERA Y PIÉ DE PÁGINA %
+%------------------------------------%
+%Estilo para las páginas normales
+\newcommand{\mypstyle}{
+\fancyhf{}
+\lhead{\leftmark}
+\rhead{\rightmark}
+\rfoot{Página \thepage /\pageref*{LastPage}}
+}
+%Estilo vacío para las páginas de parte
+\newcommand{\emptystl}{
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+}
+
+% Editamos la forma en la que se muestra el capítulo y la sección
+\newcommand{\partmark}[1]{\markboth{\thepart. \MakeUppercase{#1}}{}}
+\renewcommand{\chaptermark}[1]{\markright{\thechapter. #1}{}}
+\renewcommand{\sectionmark}[1]{}
+%\renewcommand{\chaptermark}[1]{\markboth{\thepart. \MakeUppercase{#1}}{}}
+%\renewcommand{\sectionmark}[1]{\markright{\thesection. #1}{}}
+
+%Creamos nuestro propio comando part para conseguir el aspecto deseado
+\DeclareDocumentCommand\mypart{ o m }{%
+	\fancypagestyle{plain}{\emptystl}
+	\IfNoValueTF{#1}
+		{\part{#2}}
+		{\part[#1]{#2}}
+	\partmark{#2}
+	\fancypagestyle{plain}{\mypstyle}
+}
+
+
+%------------------------%
+% ESTILO Y CONFIGURACIÓN %
+%------------------------%
+%Establecemos el estilo para fancy
+\mypstyle
+%\chapter reinicia el estilo a plain, esto es para mantener nuestro estilo
+% Si no se arregla, añadir \fancypagestyle{fancy} después del capítulo en
+% el que falle
+\fancypagestyle{plain}{\mypstyle}
+
+%Editamos la distancia entre párrafos
+\setlength{\parskip}{1.0em}
+
+%Apariencia del código
+\lstloadlanguages{[ISO]C++}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+	language=C++,
+	basicstyle=\footnotesize,
+	numbers=left,
+	frame=single,
+	breaklines=true,
+	escapeinside={\%*}{*},
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve}
+}
+
+%Apariencia de los apéndices
+\addto{\captionsspanish}{\renewcommand{\appendixname}{Anexo}}
+
+%----------------------%
+% REDEFINIMOS ABSTRACT %
+%----------------------%
+\addto\captionsspanish{\renewcommand*\abstractname{Abstract}}
+\makeatletter
+\renewenvironment{abstract}
+{%
+	\small
+	\begin{center}%
+		{\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
+	\end{center}%
+	\quotation
+}
+{%
+	\endquotation
+	\thispagestyle{empty} %Eliminamos la cabecera y la enumeración de la pagina
+}
+\makeatother
+
+%-------------%
+% REFERENCIAS %
+%-------------%
+% Capítulos, secciones, etc; con número y título
+\newcommand{\refcont}[1]{\ref{#1}-\nameref{#1}}
+% Capítulos, secciones, etc; con número y página
+\newcommand{\refpage}[1]{[ver página \vref{#1}]}
+% Capítulos, secciones, etc; con número, título y página
+\newcommand{\refcontpage}[1]{\ref{#1}-\nameref{#1}\vpageref{#1}}
+\addto\extrasspanish{ \renewcommand{\reftextfaraway}[1]{- página~\pageref{#1}} }
+
+% -------%
+% MACROS %
+% -------%
+\def \POV {POV (\textit{Persistence Of Vision})}
+\def \Placa {\textit{STM32F4-Discovery}}
+
+\def \hastaAqui {\todo[inline]{TERMINADO HASTA AQUÍ}}
