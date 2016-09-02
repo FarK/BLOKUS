@@ -4,13 +4,6 @@
 ; state = game
 ; movement = tile
 
-; TODO:
-;   * max-depth  [OK]
-;   * end-state  [OK] => mm-next-mov return NULL
-;   * max-time   [OK]
-;   * pruning?   [????]
-
-;TODO: ganar
 (defun mm-end-cond (node)
   (or (mm--max-depth-p  node)
       (mm--max-time-p   node)
@@ -29,11 +22,13 @@
 (defun mm--max-passes-p (node)
   (>= (node-npasses node) (game-nplayers (node-state node))))
 
+(defun mm-maxp   (node) (declare (ignore node)) +max-points+)
+(defun mm-minp   (node) (declare (ignore node)) 0)
+(defun mm-maxsum (node)                         (* +max-points+ (game-nplayers (node-state node))))
+(defun mm-minsum (node) (declare (ignore node)) 0)
+
 (defun node-player (node)
   (game-player (node-state node) (node-max-id node)))
-
-(defun mm-maxp (node)
-  (= (node-turn node) (player-id (node-player node))))
 
 (defun mm-gen-movements (node)
   (let ((game      (node-state node))

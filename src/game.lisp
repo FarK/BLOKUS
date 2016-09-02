@@ -9,7 +9,7 @@
                  &aux (players
                         (let ((id -1))
                           (when (> (list-length ptypes) 4)
-                            (error "Four maximun players"))
+                            (error "Four maximum players"))
                           (list2array (loop for type in ptypes collect
                                             (make-player (incf id) type))))))))
   (board (make-board))

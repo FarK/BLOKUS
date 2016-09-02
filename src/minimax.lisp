@@ -25,7 +25,8 @@
         values
         best-values
         best-movement)
-    (loop for movement in (mm-gen-movements node) until (mm-end-cond node) do
+    (loop for movement in (mm-gen-movements node)
+      until (or (mm-end-cond node) (mm--prune-p node best-values values)) do
           (mm--next-node node movement)
           (setf values (mm--eval-node node))
           (mm--prev-node node movement)
@@ -36,7 +37,8 @@
 
 (defun mm--eval-node (node)
   (let (values new-values)
-    (loop for movement in (mm-gen-movements node) until (mm-end-cond node) do
+    (loop for movement in (mm-gen-movements node)
+      until (or (mm-end-cond node) (mm--prune-p node values new-values)) do
           (mm--next-node node movement)
           (setf new-values (mm--eval-node node))
           (mm--prev-node node movement)
@@ -57,3 +59,16 @@
   (if (eq movement 'pass)
     (decf (node-npasses node))
     (mm-undo-movement node movement)))
+
+(defun mm--prune-p (node values new-values)
+  (or (mm--imm-prune-p     node)
+      (mm--shallow-prune-p node values new-values)))
+
+(defun mm--imm-prune-p (node)
+  (= (player-points (game-player (node-state node) (node-turn node)))
+     (mm-maxp node)))
+
+(defun mm--shallow-prune-p (node values new-values)
+  (let ((turn (node-turn node)))
+    (when (and values new-values)
+      (>= (aref values turn) (- (mm-maxsum node) (aref new-values turn))))))
