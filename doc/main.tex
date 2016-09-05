@@ -4,9 +4,13 @@
 \usepackage{graphicx}		% Inclusión de imágenes
 \usepackage{import}		% Inclusión con rutas relativas
 \usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{algorithm}
 \usepackage{algpseudocode}	% Pseudocódigo
 \usepackage{fancyhdr}           % Cabecera y pie de página
+\usepackage{hhline}
+\usepackage[table,xcdraw]{xcolor}
 
 % Enlaces y atributos PDF
 \usepackage{hyperref}
@@ -18,17 +22,18 @@
 	citecolor=blue,
 	filecolor=blue,
 	urlcolor=blue,
-	pdftitle=CyclePOV,
+	pdftitle=Minimax-Blokus,
 	pdfauthor=Carlos Falgueras García,
-	pdfsubject=Proyecto de fin de carrera,
-	pdfkeywords=POV bicycle led
+	pdfsubject=Proyecto de IA1,
+	pdfkeywords=minimax blokus
 }
 
 \setlength{\headheight}{16pt} % Para callar un warning
 \pagestyle{fancy} % Cabecera y pie de página por defecto
 
-\title{{\Huge Minimax para Blokus} \\ {\large\slshape Trabajo IA2}}
+\title{{\Huge Minimax para Blokus} \\ {\large\slshape Trabajo IA1}}
 \author{Carlos Falgueras García}
+\date{}
 
 \setlist[itemize]{noitemsep, topsep=0em}
 
@@ -42,11 +47,11 @@
 
 \section{Introducción}
 \import{./}{introduccion}
-\clearpage
+% \clearpage
 
 \section{Representación}
 \import{./}{representacion}
-\clearpage
+% \clearpage
 
 \section{Algoritmos}
 \import{./}{alg_minimax}
@@ -58,6 +63,7 @@
 \import{./}{manual}
 \clearpage
 
-\section{Trabajo futuro}
+\section{Comparativa}
+\import{./}{comparativa}
 
 \end{document}

@@ -1,0 +1,40 @@
+Se ha realizado un test con el fin de comparar las distintas estrategias de los
+jugadores (ver tipos de jugadores en \ref{subsec:el-programa}). El test consiste
+en lanzar partidas de 4 jugadores con todas las combinaciones de tipos y anotar
+el ganador.
+
+Las partidas se han lanzado con profufundidad infinita y dejando a cada jugador
+un tiempo máximo de 3 segundos para tomar una decisión. Este tiempo está elegido
+para que el test no dure mucho más de una hora.
+
+A continuación se muestra una tabla con los resultados. Cabe destacar que, dada
+la poca profundidad que puede alcanzar el algoritmo con solo 3 segundos,
+\textbf{los resultados obtenidos no son, en absoluto, relevantes}.
+
+\newcommand\hcell[1]{\cellcolor[HTML]{C0C0C0}\textbf{#1}}
+\newcommand\multcol[1]{\multicolumn{1}{|r}{\hcell{#1}}}
+\begin{table}[hb]
+\centering
+\begin{tabular}{rrrr|c|c|c|}
+\hhline{*{4}{~}*{3}{-}}
+                                                                                                      &&&& \hcell{Selfish} & \hcell{Paranoid} & \hcell{Random} \\ \hline
+\multcol{selfish  } & \multcol{selfish  } & \multcol{selfish  } & \multicolumn{1}{|r|}{\hcell{selfish }} & \checkmark      &                  &                \\ \hline
+\multcol{paranoid } & \multcol{paranoid } & \multcol{paranoid } & \multicolumn{1}{|r|}{\hcell{paranoid}} & \checkmark      &                  &                \\ \hline
+\multcol{random   } & \multcol{random   } & \multcol{random   } & \multicolumn{1}{|r|}{\hcell{random  }} & \checkmark      &                  &                \\ \hline
+\multcol{selfish  } & \multcol{selfish  } & \multcol{selfish  } & \multicolumn{1}{|r|}{\hcell{paranoid}} & \checkmark      &                  &                \\ \hline
+\multcol{selfish  } & \multcol{selfish  } & \multcol{paranoid } & \multicolumn{1}{|r|}{\hcell{paranoid}} & \checkmark      &                  &                \\ \hline
+\multcol{selfish  } & \multcol{paranoid } & \multcol{paranoid } & \multicolumn{1}{|r|}{\hcell{paranoid}} & \checkmark      &                  &                \\ \hline
+\multcol{selfish  } & \multcol{selfish  } & \multcol{selfish  } & \multicolumn{1}{|r|}{\hcell{random  }} & \checkmark      &                  &                \\ \hline
+\multcol{selfish  } & \multcol{selfish  } & \multcol{random   } & \multicolumn{1}{|r|}{\hcell{random  }} & \checkmark      &                  &                \\ \hline
+\multcol{selfish  } & \multcol{random   } & \multcol{random   } & \multicolumn{1}{|r|}{\hcell{random  }} & \checkmark      &                  &                \\ \hline
+\multcol{paranoid } & \multcol{paranoid } & \multcol{paranoid } & \multicolumn{1}{|r|}{\hcell{random  }} & \checkmark      &                  &                \\ \hline
+\multcol{paranoid } & \multcol{paranoid } & \multcol{random   } & \multicolumn{1}{|r|}{\hcell{random  }} & \checkmark      &                  &                \\ \hline
+\multcol{paranoid } & \multcol{random   } & \multcol{random   } & \multicolumn{1}{|r|}{\hcell{random  }} & \checkmark      &                  &                \\ \hline
+\multcol{selfish  } & \multcol{selfish  } & \multcol{paranoid } & \multicolumn{1}{|r|}{\hcell{random  }} & \checkmark      &                  &                \\ \hline
+\multcol{selfish  } & \multcol{paranoid } & \multcol{paranoid } & \multicolumn{1}{|r|}{\hcell{random  }} & \checkmark      &                  &                \\ \hline
+\multcol{selfish  } & \multcol{paranoid } & \multcol{random   } & \multicolumn{1}{|r|}{\hcell{random  }} & \checkmark      &                  &                \\ \hline
+\end{tabular}
+\caption{Comparativa entre estrategias: Tipos de jugadores de la partida frente a tipo de jugador ganador}
+\label{tab:comparativa}
+\end{table}
+

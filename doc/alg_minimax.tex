@@ -12,21 +12,46 @@ dos funciones:
 		estado exactamente igual que antes de aplicarlo.
 \end{itemize}
 
-El pseudocódigo de las dos principales funciones de minimax se muestra a
-continuación. En ellos podemos encontrar las funciones ``end-condition$(node)$''
-y ``choose-values$(values, best\ values, node)$''. La primera comprueba las
-condiciones que determinan el fin de la búsqueda (profundidad máxima, límite de
-tiempo, etc). La segunda devuelve cierto si el primer vector de valores es
-elegido sobre el segundo, es en esta función donde se implementan las distintas
-estrategias: \textsl{paranóica}, \textsl{egoista} y \textsl{aleatoria}.
+El pseudocódigo de las dos principales funciones de minimax se muestra en
+\ref{alg:minimax} y \ref{alg:eval-node} . En ellos podemos encontrar las
+funciones ``end-condition$(node)$'' y ``choose-values$(values, best\ values,
+node)$''. La primera comprueba las condiciones que determinan el fin de la
+búsqueda (profundidad máxima, límite de tiempo, etc). La segunda devuelve
+cierto si el primer vector de valores es elegido sobre el segundo, es en esta
+función donde se implementan las distintas estrategias: \textsl{paranoica},
+\textsl{egoísta} y \textsl{aleatoria}.
+
+\subsubsection{Heurística}
+Se ha elegido una heurística sencilla para puntuar cada nodo del árbol minimax:
+un vector con las \textbf{puntuaciones acumuladas} de cada jugador. Esta
+heurística tiene la ventaja de evaluar también los nodos finales.
+
+\subsubsection{Poda}
+Blokus no es un juego \textbf{zero-sum}: que un jugador coloque una pieza
+dificulta que el resto puntúe, pero no hay una relación directa entre los puntos
+que consigue un jugador y la puntuación máxima que puede alcanzar el resto. Este
+hecho complica la poda.
+
+Se han implementado la \textbf{poda inmediata} y la \textbf{poda superficial},
+aunque con la heurística elegida nunca van a actuar.
+
+\paragraph{La poda inmediata}
+La poda inmediata ocurre cuándo un jugador deja de explorar su posibles
+movimientos, al encontrar uno que le otorga la \textbf{máxima puntuación}. Esto
+va a ocurrir cuando el jugador coloque todas sus fichas.
+
+\paragraph{La poda superficial}
+Esta poda ocurre cuándo un jugador A detecta que que su inmediato contrincante
+encuentra una jugada tal que impide que A mejore su puntuación actual a través
+de ese subárbol. El jugador A puede entonces dejar de explorar esta rama.
 
 \clearpage
 \begin{algorithm}
-\caption{minimax}\label{minimax}
+\caption{minimax}\label{alg:minimax}
 \begin{algorithmic}
 	\Function{minimax}{$state, node\ options$} \Comment{Node options like max-depth}
 	\State $node \gets\ $make-node$(state, node\ options)$
-	\For{$move\ in\ $get-movements$(node)\ and\ not\ $end-condition$(node)$}
+	\For{$move\ in\ $get-movements$(node)\ until\ $end-loop-p$(node)$}
 		\State $node \gets\ $next-node$(node, move)$ \Comment{Apply movement}
 		\State $values \gets\ $eval-node$(node)$
 		\State $node \gets\ $prev-node$(node, move)$ \Comment{Undo movement}
@@ -42,10 +67,10 @@ estrategias: \textsl{paranóica}, \textsl{egoista} y \textsl{aleatoria}.
 \end{algorithm}
 
 \begin{algorithm}
-\caption{eval-node}\label{eval-node}
+\caption{eval-node}\label{alg:eval-node}
 \begin{algorithmic}
 	\Function{eval-node}{$node$}
-	\For{$move\ in\ $get-movements$(node)\ and\ not\ $end-condition$(node)$}
+	\For{$move\ in\ $get-movements$(node)\ until\ $end-loop-p$(node)$}
 		\State $node \gets\ $next-node$(node, move)$  \Comment{Apply movement}
 		\State $new\ values \gets\ $eval-node$(node)$
 		\State $node \gets\ $prev-node$(node, move)$  \Comment{Undo movement}
@@ -54,6 +79,21 @@ estrategias: \textsl{paranóica}, \textsl{egoista} y \textsl{aleatoria}.
 		\State $values \gets new\ values$
 	\EndIf
 	\State \Return utility$(node)$
+	\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{end-loop-p}\label{alg:end-loop-p}
+\begin{algorithmic}
+	\Function{end-loop}{$node, best\ values, new\ values$}
+	\vspace{-1em}
+	\begin{align*}
+		\text{\Return} &\text{end-condition-p}(node)                              &or\\
+		               &\text{immediate-prune-p}(node, best\ values, new\ values) &or\\
+		               &\text{shallow-prune-p}(node, best\ values, new\ values)   &\\
+		\end{align*}
+	\vspace{-4em}
 	\EndFunction
 \end{algorithmic}
 \end{algorithm}
