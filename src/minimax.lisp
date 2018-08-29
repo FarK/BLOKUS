@@ -22,28 +22,28 @@
                          :turn (if turn turn 0)
                          :max-time-s max-time
                          :max-depth max-depth))
-        values
-        best-values
+        new-values
+        node-values
         best-movement)
     (loop for movement in (mm-gen-movements node)
-      until (or (mm-end-cond node) (mm--prune-p node best-values values)) do
+      until (or (mm-end-cond node) (mm--prune-p node node-values new-values)) do
           (mm--next-node node movement)
-          (setf values (mm--eval-node node))
+          (setf new-values (mm--eval-node node))
           (mm--prev-node node movement)
-          (when (mm-choose-values values best-values node)
-            (setf best-values values)
+          (when (mm-choose-values new-values node-values node)
+            (setf node-values new-values)
             (setf best-movement movement)))
     best-movement))
 
 (defun mm--eval-node (node)
-  (let (values new-values)
+  (let (node-values new-values)
     (loop for movement in (mm-gen-movements node)
-      until (or (mm-end-cond node) (mm--prune-p node values new-values)) do
+      until (or (mm-end-cond node) (mm--prune-p node node-values new-values)) do
           (mm--next-node node movement)
           (setf new-values (mm--eval-node node))
           (mm--prev-node node movement)
-          (when (mm-choose-values new-values values node)
-              (setf values new-values)))
+          (when (mm-choose-values new-values node-values node)
+              (setf node-values new-values)))
   (mm-utility node)))
 
 (defun mm--next-node (node movement)

@@ -15,9 +15,10 @@
     (when max-depth (>= depth max-depth))))
 
 (defun mm--max-time-p (node)
-  (let ((start (node-start-time node))
-        (max   (node-max-time   node)))
-  (when max (>= (- (get-internal-real-time) start) max))))
+  (when (>= (node-depth node) 1)
+    (let ((start (node-start-time node))
+          (max   (node-max-time   node)))
+    (when max (>= (- (get-internal-real-time) start) max)))))
 
 (defun mm--max-passes-p (node)
   (>= (node-npasses node) (game-nplayers (node-state node))))
@@ -64,15 +65,15 @@
 
 ; Returns t when v1 is chosen and nil when v2 is chosen
 (defun mm-choose-values (v1 v2 node)
-  (unless v2 (return-from mm-choose-values v1))
-  (let ((ai-id       (player-id (node-player node)))
-        (player-id   (node-turn node))
-        (ai-type (player-type (node-player node))))
-  (case ai-type
-    (random   (zerop (random 2)))
-    (selfish  (mm--best-2-me       v1 v2 player-id))
-    (paranoid (mm--paranoid-choice v1 v2 ai-id player-id))
-    (t        (error "Invalid player type ~a" ai-type)))))
+  (unless v2 (return-from mm-choose-values t))
+  (let ((ai-id     (player-id (node-player node)))
+        (player-id (node-turn node))
+        (ai-type   (player-type (node-player node))))
+    (case ai-type
+      (random   (zerop (random 2)))
+      (selfish  (mm--best-2-me       v1 v2 player-id))
+      (paranoid (mm--paranoid-choice v1 v2 ai-id player-id))
+      (t        (error "Invalid player type ~a" ai-type)(exit)))))
 
 (defun mm--paranoid-choice (v1 v2 ai-id player-id)
   (if (= ai-id player-id)
